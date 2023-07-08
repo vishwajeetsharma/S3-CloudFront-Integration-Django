@@ -129,50 +129,14 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-# STATIC_URL = '/static/'
-
-# STATIC_URL = '/static/'
-# MEDIA_URL="/media/"
-# MEDIA_ROOT=os.path.join(BASE_DIR,"media/")
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# if DEBUG:
 STATIC_URL='/static/'
-#     MEDIA_URL="/media/"
-#     MEDIA_ROOT=os.path.join(BASE_DIR,"media/")
-# else:
-# STORAGES = {
-#             "default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"},
-#             'staticfiles': {
-#                 'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
-#                 'OPTIONS': {
-#                     # Optional: Set the S3 custom domain for CloudFront if applicable
-#                     'object_parameters': {
-#                         'CacheControl': 'max-age=6000',  # Optional: Specify custom headers for CloudFront or S3
-#                     },
-#                 },
-#             },
-#         }
-# STORAGES = {"default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"}}
-# STORAGES = {
-#     "default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"},
-#     "staticfiles": {"BACKEND": "storages.backends.s3boto3.S3StaticStorage"}
-#     }
+
 STORAGES = {
     "default": {"BACKEND": "uploadable.custom_storage.MediaStorage"},
     "staticfiles": {"BACKEND": "uploadable.custom_storage.StaticStorage"}
-    }
-
-# Set the storage backend for static files
-# STATICFILES_STORAGE = {"default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"}}
+}
 
 AWS_ACCESS_KEY_ID=env('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY=env('AWS_SECRET_ACCESS_KEY')
@@ -184,23 +148,6 @@ AWS_S3_CUSTOM_DOMAIN = 'cdn.wearebuddies.club'
 
 AWS_CLOUDFRONT_KEY_ID=env.str('AWS_CLOUDFRONT_KEY_ID').strip()
 AWS_CLOUDFRONT_KEY=env.str('AWS_CLOUDFRONT_KEY', multiline=True).encode('ascii').strip()
-
-
-# AWS_LOCATION = 'static'
-# Set the static URL for CloudFront or S3
-# STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
-# MEDIA_URL=f"https://{AWS_S3_CUSTOM_DOMAIN}/"
-# # Set STATIC_ROOT to an empty string since it's not used with CloudFront or S3
-# STATIC_ROOT = ''
-    # Optional: Specify custom headers for CloudFront or S3
-    # AWS_S3_OBJECT_PARAMETERS = {
-    #     'CacheControl': 'max-age=0',  # Cache static files for one day
-    # }
-
-    # class MediaStorage(S3Boto3Storage):
-    #     bucket_name = env('AWS_STORAGE_BUCKET_NAME')
-    #     location = 'media'
-
-    # class StaticStorage(S3Boto3Storage):
-    #     bucket_name = env('AWS_STORAGE_BUCKET_NAME')
-    #     location = 'static'
+AWS_S3_STATIC_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=300',  # Cache static files for one day
+}
